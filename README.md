@@ -20,14 +20,16 @@ kund. Det hör hemma i `prorespektera-web` (privat) eller i OneDrive.
 | `markning-90-konto.png` | 179 × 47 px, RGBA | 90-konto – Svensk Insamlingskontroll. Vit bakgrund i filen. Liten upplösning; visa högst ca 50 px hög |
 | `markning-giva-sverige.png` | 154 × 88 px, RGBA | Tryggt givande – Giva Sverige. Skalad till dubbel visningshöjd (44 px) |
 
+Prorespektera-loggans proportioner är 6,34:1. Äldre kod räknar med
+720 × 114 (6,32:1) från en tidigare variant; skillnaden är liten men sätt
+alltid höjden utifrån filens egna mått i stället för en hårdkodad kvot.
+
+### Märkningsloggorna
+
 Märkningsloggorna är Svensk Insamlingskontrolls och Giva Sveriges märken
 (fått av CAF 8 okt 2026). De får bara visas för en organisation som faktiskt
 har märkningen. På Propagos kampanjsidor styrs det av tabellen
 `organisation_markningar` i gaming-databasen, inte av handskrivna listor.
-
-Proportionerna är 6,34:1. Äldre kod räknar med 720 × 114 (6,32:1) från en
-tidigare variant; skillnaden är liten men sätt alltid höjden utifrån
-filens egna mått i stället för en hårdkodad kvot.
 
 ## Hämta i ett bygge
 
