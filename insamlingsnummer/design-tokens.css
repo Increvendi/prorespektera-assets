@@ -1,25 +1,48 @@
 :root{
-  --paper:#F2F4F7; --surface:#FFFFFF; --surface-2:#F7F9FB;
-  --line:#DDE3EA; --line-soft:#E9EEF3;
-  --ink:#111A26; --ink-2:#33404F; --muted:#697786;
-  --accent:#1B3A5C; --accent-soft:#E7EDF5; --accent-ink:#2C5B8A;
-  --ok:#22694A; --ok-soft:#E2F0E8;
-  --warn:#8A5B12; --warn-soft:#F7EEDC;
-  --stop:#8C2F28; --stop-soft:#F7E6E4;
+  /* Botten och ytor. Varm papperston, inte kall blågrå: registret ska läsas
+     som en uppslagsbok, inte som ett varningssystem. */
+  --paper:#F7F4EE; --surface:#FFFFFF; --surface-2:#F1EDE4; --surface-3:#FBF8F2;
+  --line:#DDD6C9; --line-soft:#EDE8DF;
+
+  /* Text. Varmsvart med grön underton, inte blåsvart — håller sidan i papper. */
+  --ink:#15211C; --ink-2:#3A4742; --muted:#5E6B64;
+
+  /* Varumärket. Grönt är BÅDE registrets färg och beskedet "i sin ordning",
+     eftersom det är svaret tjänsten ger i nästan alla uppslag. Därför är
+     --ok avsiktligt samma värde som --accent: ett godkänt nummer och
+     varumärket säger samma sak. --accent-ljus är aktiv menypost på mörk
+     meny, --accent-ink är länkfärgen på ljus botten (7,2:1 mot --paper). */
+  --accent:#1E5B45; --accent-ljus:#2A7357; --accent-soft:#E4EEE8; --accent-ink:#1B5340;
+  --ok:#1E5B45; --ok-soft:#E4EEE8;
+
+  /* Status. Bärnsten och arkivblå skiljer sig i både ton och ljushet, så de
+     går att hålla isär även utan färgseende — grönt mot rött undviks.
+     Tegel används bara för fel och avpublicerat, aldrig som dekor. */
+  --warn:#9A5B18; --warn-soft:#F8EEDE;
+  --info:#2B5C86; --info-soft:#E6EDF4;
+  --stop:#8C3A2E; --stop-soft:#F8E7E3;
+  --neutral:#8D9892;
+
+  /* Notisbricka på mörk meny. Mörk text, inte vit: vit ger bara 3,4:1. */
+  --bricka:#D96A5E; --bricka-ink:#2B1512;
+
   --on-accent:#FFFFFF;
   --radius:10px;
   color-scheme:light;
 }
 @media (prefers-color-scheme: dark){
   :root{
-    --paper:#0C121A; --surface:#131C27; --surface-2:#18222E;
-    --line:#27333F; --line-soft:#1F2A36;
-    --ink:#E8EEF4; --ink-2:#C3CEDA; --muted:#8B98A6;
-    --accent:#9CC2E8; --accent-soft:#1A2938; --accent-ink:#A9CBEC;
-    --ok:#79C9A2; --ok-soft:#16291F;
-    --warn:#DCB165; --warn-soft:#2A2314;
+    --paper:#101512; --surface:#192019; --surface-2:#1F2722; --surface-3:#161C18;
+    --line:#2D3630; --line-soft:#222A25;
+    --ink:#E9EDE8; --ink-2:#C4CDC6; --muted:#8D9892;
+    --accent:#7FC9A5; --accent-ljus:#9BD7B9; --accent-soft:#15291F; --accent-ink:#7FC9A5;
+    --ok:#7FC9A5; --ok-soft:#15291F;
+    --warn:#E0B571; --warn-soft:#2A2314;
+    --info:#8FBCE4; --info-soft:#15222E;
     --stop:#E39189; --stop-soft:#2C1918;
-    --on-accent:#0C121A;
+    --neutral:#6E7A74;
+    --bricka:#D96A5E; --bricka-ink:#2B1512;
+    --on-accent:#101512;
     color-scheme:dark;
   }
 }
@@ -34,6 +57,12 @@ a{color:var(--accent-ink)}
 .mono{font-family:"IBM Plex Mono",ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums}
 :focus-visible{outline:2px solid var(--accent-ink);outline-offset:2px;border-radius:4px}
 
+/* Ordmärket: gemener, andra ordledet i varumärkesfärgen.
+   insamlings<span class="ordmarke-2">nummer</span> — samma mönster bär
+   kolla<span>numret</span> och de danska och norska varianterna. */
+.ordmarke{font-weight:700;letter-spacing:-.025em;color:var(--ink)}
+.ordmarke-2{color:var(--accent)}
+
 .wrap{max-width:860px;margin:0 auto;padding:0 22px}
 .sitehead{border-bottom:1px solid var(--line);background:var(--surface)}
 .sitehead .wrap{display:flex;align-items:center;gap:12px;padding-top:14px;padding-bottom:14px}
@@ -44,12 +73,16 @@ a{color:var(--accent-ink)}
 main{padding:34px 0 0}
 .eyebrow{font-size:11px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;color:var(--muted)}
 .badge{display:inline-flex;align-items:center;gap:6px;border-radius:99px;padding:4px 11px;font-size:12.5px;font-weight:600}
-.badge.ok{background:var(--ok-soft);color:var(--ok)}
+.badge.ok{background:var(--ok-soft);color:var(--accent-ink)}
 .badge.warn{background:var(--warn-soft);color:var(--warn)}
+.badge.info{background:var(--info-soft);color:var(--info)}
+.badge.stop{background:var(--stop-soft);color:var(--stop)}
 .badge.neutral{background:var(--surface-2);color:var(--muted);border:1px solid var(--line)}
 
-h1.nummer{font-family:"IBM Plex Mono",monospace;font-size:clamp(30px,6vw,44px);font-weight:500;margin:6px 0}
-.passage{font-size:17px;color:var(--ink);max-width:62ch;margin:16px 0 0;line-height:1.6}
+/* Numret är neutralt och lättläst. Statusen bärs av badgen intill, aldrig av
+   numrets egen färg — ett nummer är inte farligt. */
+h1.nummer{font-family:"IBM Plex Mono",monospace;font-size:clamp(30px,6vw,44px);font-weight:600;margin:6px 0;color:var(--ink);letter-spacing:.01em}
+.passage{font-size:17px;color:var(--ink);max-width:62ch;margin:16px 0 0;line-height:1.65}
 .block{margin:34px 0}
 .block h2{font-size:22px;margin-bottom:8px}
 .block p{color:var(--ink-2);max-width:66ch}
@@ -85,3 +118,18 @@ th{text-align:left;font-size:11px;letter-spacing:.08em;text-transform:uppercase;
 td{padding:11px 14px;border-bottom:1px solid var(--line-soft);color:var(--ink-2)}
 tr:last-child td{border-bottom:0}
 td:first-child{font-family:"IBM Plex Mono",monospace;font-weight:600}
+
+/* Inloggade lägen: admin och kundportal.
+   Admin har mörk sidomeny i varumärkesfärgen, kundportalen en ljus toppbar —
+   kunden ska aldrig känna att hon tittar in i vårt interna system. */
+.sidomeny{background:var(--accent);color:#fff}
+.sidomeny a,.sidomeny .post{display:flex;align-items:center;gap:12px;border-radius:8px;padding:9px 12px;
+  font-size:14px;text-decoration:none;color:rgba(255,255,255,.8)}
+.sidomeny a:hover{background:var(--accent-ljus);color:#fff}
+.sidomeny .aktiv{background:var(--accent-ljus);color:#fff;font-weight:600}
+.bricka{border-radius:99px;background:var(--bricka);color:var(--bricka-ink);
+  font-size:10px;font-weight:700;padding:2px 6px;line-height:1.4}
+.flikrad{display:flex;flex-wrap:wrap;gap:22px;border-bottom:1px solid var(--line)}
+.flikrad a,.flikrad .flik{margin-bottom:-1px;border-bottom:2px solid transparent;padding:0 2px 9px;
+  font-size:14px;text-decoration:none;color:var(--muted)}
+.flikrad .aktiv{border-bottom-color:var(--accent);color:var(--ink);font-weight:600}
